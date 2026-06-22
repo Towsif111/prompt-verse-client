@@ -38,7 +38,7 @@ function Navbar() {
               <span>Login</span>
             </span>
           </Link>
-          <Link href="/register" className="user-profile" aria-label="Sign up">
+          <Link href="/auth/signup" className="user-profile" aria-label="Sign up">
             <span className="user-profile-inner">
               <UserPlus />
               <span>Sign Up</span>
