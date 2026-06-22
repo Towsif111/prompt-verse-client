@@ -32,10 +32,10 @@ function Navbar() {
         </div>
 
         <div className="flex items-center gap-3">
-          <Link href="/login" className="user-profile" aria-label="Login">
+          <Link href="/auth/signin" className="user-profile" aria-label="Login">
             <span className="user-profile-inner">
               <LogIn />
-              <span>Login</span>
+              <span>Sign In</span>
             </span>
           </Link>
           <Link href="/auth/signup" className="user-profile" aria-label="Sign up">

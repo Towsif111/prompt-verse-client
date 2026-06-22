@@ -7,7 +7,7 @@ export default function Footer() {
                 <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
                     <div className="col-span-2">
                         <span className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                            PromptHub
+                            PromptVerse
                         </span>
                         <p className="mt-4 text-gray-500 text-sm max-w-xs">
                             The ultimate marketplace for high-quality AI prompts. Empowering creators and developers with the best AI tools.
