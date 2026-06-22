@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @import "@fortawesome/fontawesome-free/css/all.min.css";
-@plugin "daisyui";
+@import "@heroui/styles"; 
 
 .user-profile {
 	width: 131px;
