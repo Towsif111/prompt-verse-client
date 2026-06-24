@@ -2,7 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
-import { Card, Separator, Button, Description, FieldError, Form, Input, Label, TextField } from "@heroui/react";
+import { Card, Separator, Button, FieldError, Form, Input, Label, TextField } from "@heroui/react";
+import {Description, Radio, RadioGroup} from "@heroui/react";
 import toast from "react-hot-toast";
 import { authClient } from "@/lib/auth-client";
 
@@ -16,11 +17,15 @@ const SignUpPage = () => {
     const user = Object.fromEntries(formData.entries());
 
     const { data, error } = await authClient.signUp.email({
-      email: user.email,
-      password: user.password,
-      name: user.name,
-      image: user.image,
-    });
+        email: user.email,
+        password: user.password,
+        name: user.name,
+        image: user.image,
+        subscription: user.subscription,
+        role: "User",
+        callbackURL: "/",
+});
+
 
     if (error) {
       toast.error(error.message || "Sign up failed. Please try again.");
@@ -34,7 +39,7 @@ const SignUpPage = () => {
   };
 
   const handleGoogleSignIn = async () => {
-    const { error } = await authClient.signIn.social({ provider: "google" });
+    const { error } = await authClient.signIn.social({ provider: "google", callbackURL: "/" });
 
     if (error) {
       toast.error(error.message || "Google sign-in failed. Please try again.");
@@ -93,6 +98,30 @@ const SignUpPage = () => {
             <Description>Must be at least 6 characters with 1 uppercase and 1 number</Description>
             <FieldError />
           </TextField>
+
+          <div className="flex flex-col gap-4">
+      <Label>Choose your plan</Label>
+      <RadioGroup  name="subscription" orientation="horizontal">
+        <Radio value="free">
+          <Radio.Content>
+            <Radio.Control>
+              <Radio.Indicator />
+            </Radio.Control>
+            Free
+          </Radio.Content>
+          <Description>Limit: 5 Prompts</Description>
+        </Radio>
+        <Radio value="premium">
+          <Radio.Content>
+            <Radio.Control>
+              <Radio.Indicator />
+            </Radio.Control>
+            Premium
+          </Radio.Content>
+          <Description>Unlock All Prompts</Description>
+        </Radio>
+      </RadioGroup>
+    </div>
 
           <Button type="submit" className="w-full rounded-none">
             Create Account

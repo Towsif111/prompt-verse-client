@@ -32,7 +32,10 @@ const SignInPage = () => {
   };
 
   const handleGoogleSignIn = async () => {
-    const { error } = await authClient.signIn.social({ provider: "google" });
+    const { error } = await authClient.signIn.social({
+      provider: "google",
+      callbackURL: "/",
+    });
 
     if (error) {
       toast.error(error.message || "Google sign-in failed. Please try again.");

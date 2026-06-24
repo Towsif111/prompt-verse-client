@@ -13,4 +13,19 @@ export const auth = betterAuth({
     // Optional: if you don't provide a client, database transactions won't be enabled.
     client
   }),
+   user: {
+    additionalFields: {
+      role: {
+        type: "string",
+        defaultValue: "User", // Requirement: Ensures default role is 'User'
+      },
+      subscription: {
+        type: "string",
+        defaultValue: "Free", // Requirement: Tracks Free vs Premium status
+      },
+      photoURL: {
+        type: "string", // Stores the user's profile image link
+      }
+    }
+  },
 });

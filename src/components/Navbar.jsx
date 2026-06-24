@@ -1,7 +1,28 @@
+"use client";
+
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { LogIn, Sparkles, UserPlus } from "lucide-react";
+import toast from "react-hot-toast";
+import { signOut, useSession } from "@/lib/auth-client";
 
 function Navbar() {
+  const router = useRouter();
+  const {data:session, isPending} = useSession();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      toast.success("Signed out successfully.");
+      setTimeout(() => {
+        router.push("/");
+      }, 1200);
+    } catch (error) {
+      toast.error(error?.message || "Sign out failed. Please try again.");
+      console.error("Sign out failed:", error);
+    }
+  };
+
   return (
     <nav className="sticky top-0 z-50 border-b border-slate-200 bg-white/80 backdrop-blur-xl">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
@@ -32,18 +53,29 @@ function Navbar() {
         </div>
 
         <div className="flex items-center gap-3">
-          <Link href="/auth/signin" className="user-profile" aria-label="Login">
-            <span className="user-profile-inner">
-              <LogIn />
-              <span>Sign In</span>
-            </span>
-          </Link>
-          <Link href="/auth/signup" className="user-profile" aria-label="Sign up">
-            <span className="user-profile-inner">
-              <UserPlus />
-              <span>Sign Up</span>
-            </span>
-          </Link>
+          {isPending ? null : session ? (
+            <button type="button" onClick={handleSignOut} className="user-profile" aria-label="Sign out">
+              <span className="user-profile-inner">
+                <LogIn />
+                <span>Sign Out</span>
+              </span>
+            </button>
+          ) : (
+            <>
+              <Link href="/auth/signin" className="user-profile" aria-label="Login">
+                <span className="user-profile-inner">
+                  <LogIn />
+                  <span>Sign In</span>
+                </span>
+              </Link>
+              <Link href="/auth/signup" className="user-profile" aria-label="Sign up">
+                <span className="user-profile-inner">
+                  <UserPlus />
+                  <span>Sign Up</span>
+                </span>
+              </Link>
+            </>
+          )}
         </div>
 
       </div>

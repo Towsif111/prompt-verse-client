@@ -2,6 +2,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { Toaster } from "react-hot-toast";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,10 +15,6 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata = {
-  title: "PromptVerse",
-  description: "PromptVerse with a clean navbar.",
-};
 
 export default function RootLayout({ children }) {
   return (
@@ -28,6 +26,7 @@ export default function RootLayout({ children }) {
         <Navbar/>
         <main className="flex-1">{children}</main>
         <Footer></Footer>
+        <Toaster position="top-right" reverseOrder={false} />
       </body>
     </html>
   );
