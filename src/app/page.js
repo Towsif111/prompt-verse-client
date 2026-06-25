@@ -3,6 +3,8 @@ import WhyChooseUs from "@/components/WhyChooseUS";
 import AllPromptsSection from "@/components/AllPromptsSection";
 import TopCreators from "@/components/TopCreators";
 import CustomerReviewsSection from "@/components/CustomerReviews";
+import PlatformStats from "@/components/Stats";
+import FaqSection from "@/components/FAQ";
 
 export default async function Home() {
   const res = await fetch('http://localhost:5000/all-promts');
@@ -10,6 +12,9 @@ export default async function Home() {
 
   // Aggregate prompts by creator to compute top creators
   const creatorMap = {};
+  let totalCopiesSum = 0;
+  const categorySet = new Set();
+
   for (const prompt of prompts) {
     const key = prompt.creatorEmail;
     if (!creatorMap[key]) {
@@ -24,6 +29,9 @@ export default async function Home() {
     creatorMap[key].promptCount += 1;
     creatorMap[key].totalCopies += prompt.copyCount || 0;
     creatorMap[key].totalRating += prompt.rating || 0;
+
+    totalCopiesSum += prompt.copyCount || 0;
+    if (prompt.category) categorySet.add(prompt.category);
   }
 
   const creators = Object.values(creatorMap).map((c) => ({
@@ -38,14 +46,23 @@ export default async function Home() {
     return scoreB - scoreA;
   });
 
+  // Compute platform stats
+  const stats = {
+    totalPrompts: prompts.length,
+    totalCreators: Object.keys(creatorMap).length,
+    totalCategories: categorySet.size,
+    totalCopies: totalCopiesSum,
+  };
+
   return (
     <>
       <HeroSection />
       <AllPromptsSection prompts={prompts} />
+      <PlatformStats stats={stats} />
       <WhyChooseUs />
       <TopCreators creators={creators} />
       <CustomerReviewsSection />
-      
+      <FaqSection />
     </>
   );
 }

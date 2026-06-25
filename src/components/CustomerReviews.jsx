@@ -1,47 +1,97 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { Star, Quote } from "lucide-react";
 
 const customerReviews = [
   {
     id: 1,
     userName: "Fahim Ahmed",
     rating: 5,
-    comment: "Amazing prompt quality. I use it daily for client work."
+    comment: "Amazing prompt quality. I use it daily for client work.",
   },
   {
     id: 2,
     userName: "Jannatul Ferdaus",
     rating: 4,
-    comment: "Very clean UI and the bookmark feature is super useful."
+    comment: "Very clean UI and the bookmark feature is super useful.",
   },
   {
     id: 3,
     userName: "Sajid Hasan",
     rating: 5,
-    comment: "Premium prompts are worth it. Helped me automate many tasks."
-  }
+    comment: "Premium prompts are worth it. Helped me automate many tasks.",
+  },
 ];
 
 export default function CustomerReviewsSection() {
   return (
-    <section className="py-12">
-      <h2 className="text-2xl md:text-3xl font-bold mb-6">Customer Reviews</h2>
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+    <section className="container-shell py-16 bg-gradient-to-b from-white to-slate-50">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+      >
+        <p className="text-sm font-bold uppercase tracking-[0.35em] text-cyan-600 text-center">
+          Testimonials
+        </p>
+        <h2 className="text-4xl font-black text-center mb-2 bg-gradient-to-r from-cyan-600 to-indigo-600 bg-clip-text text-transparent">
+          What Our Users Say
+        </h2>
+        <p className="text-center text-slate-500 mb-10">
+          Hear from our community of creators and prompt enthusiasts
+        </p>
+      </motion.div>
+
+      <div className="mx-auto max-w-5xl grid md:grid-cols-3 gap-6">
         {customerReviews.map((review, index) => (
           <motion.div
             key={review.id}
-            initial={{ opacity: 0, scale: 0.96 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.3, delay: index * 0.05 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: index * 0.08 }}
             viewport={{ once: true }}
-            className="border rounded-xl p-10 bg-white shadow-sm"
+            className="group relative rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 text-center"
           >
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="font-semibold">{review.userName}</h3>
-              <span className="text-sm text-amber-500">★ {review.rating}</span>
+            {/* Quote icon */}
+            <div className="mx-auto mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-cyan-100 text-cyan-600">
+              <Quote size={18} />
             </div>
-            <p className="text-sm text-gray-600 mb-3">{review.comment}</p>
+
+            {/* Stars */}
+            <div className="flex items-center justify-center gap-0.5 mb-3">
+              {Array.from({ length: 5 }, (_, i) => (
+                <Star
+                  key={i}
+                  size={16}
+                  className={i < review.rating ? "fill-amber-400 text-amber-400" : "fill-slate-200 text-slate-200"}
+                />
+              ))}
+            </div>
+
+            {/* Comment */}
+            <p className="text-sm text-slate-600 leading-relaxed mb-4 italic">
+              &ldquo;{review.comment}&rdquo;
+            </p>
+
+            {/* User name */}
+            <div className="mx-auto flex items-center justify-center gap-2 border-t border-slate-100 pt-3">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-cyan-400 to-indigo-500 text-white text-xs font-bold">
+                {review.userName
+                  .split(" ")
+                  .map((n) => n[0])
+                  .join("")
+                  .toUpperCase()
+                  .slice(0, 2)}
+              </div>
+              <span className="text-sm font-semibold text-slate-700">
+                {review.userName}
+              </span>
+            </div>
+
+            {/* Hover accent */}
+            <div className="absolute bottom-0 left-0 right-0 h-1 w-0 bg-gradient-to-r from-cyan-400 to-indigo-500 transition-all duration-300 group-hover:w-full rounded-b-2xl" />
           </motion.div>
         ))}
       </div>
