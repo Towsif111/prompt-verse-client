@@ -1,7 +1,14 @@
+"use client";
+
 import Image from "next/image";
+import Link from "next/link";
+import { useSession } from "@/lib/auth-client";
 
 const AllPromptsCard = ({ prompt }) => {
+  const { data: session } = useSession();
+
   const {
+    _id,
     title,
     description,
     category,
@@ -11,6 +18,8 @@ const AllPromptsCard = ({ prompt }) => {
     copyCount,
     rating,
   } = prompt;
+
+  const href = session ? `/prompts/${_id}` : "/auth/signin";
 
   return (
     <div className="group overflow-hidden rounded-2xl border border-neutral-800/60 bg-neutral-900/60 shadow-xl shadow-black/20 backdrop-blur-sm transition hover:border-neutral-700">
@@ -59,9 +68,12 @@ const AllPromptsCard = ({ prompt }) => {
             </p>
           </div>
 
-          <button className="rounded-xl border border-neutral-700 px-4 py-2 text-sm text-neutral-300 transition hover:border-lime-300 hover:text-lime-200">
+          <Link
+            href={href}
+            className="rounded-xl border border-neutral-700 px-4 py-2 text-sm text-neutral-300 transition hover:border-lime-300 hover:text-lime-200"
+          >
             View Prompt
-          </button>
+          </Link>
         </div>
       </div>
     </div>

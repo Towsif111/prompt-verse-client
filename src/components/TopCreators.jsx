@@ -21,7 +21,7 @@ export default function TopCreators({ creators = [] }) {
   const topCreators = creators.slice(0, 6);
 
   return (
-    <section className="container-shell py-16 bg-gradient-to-b from-white to-slate-50">
+    <section id="top-creators" className="container-shell py-16 bg-gradient-to-b from-white to-slate-50">
       <div className="mx-auto max-w-2xl text-center mb-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

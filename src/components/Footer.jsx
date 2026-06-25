@@ -16,9 +16,9 @@ export default function Footer() {
                     <div>
                         <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">Platform</h3>
                         <ul className="mt-4 space-y-4">
-                            <li><Link href="/prompts" className="text-base text-gray-500 hover:text-gray-900">All Prompts</Link></li>
-                            <li><Link href="/trending" className="text-base text-gray-500 hover:text-gray-900">Trending</Link></li>
-                            <li><Link href="/creators" className="text-base text-gray-500 hover:text-gray-900">Top Creators</Link></li>
+                            <li><Link href="/all-prompts" className="text-base text-gray-500 hover:text-gray-900">All Prompts</Link></li>
+                            <li><Link href="/all-prompts" className="text-base text-gray-500 hover:text-gray-900">Trending</Link></li>
+                            <li><Link href="/#top-creators" className="text-base text-gray-500 hover:text-gray-900">Top Creators</Link></li>
                         </ul>
                     </div>
                     <div>
