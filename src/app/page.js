@@ -2,6 +2,7 @@ import HeroSection from "@/components/HeroSection";
 import WhyChooseUs from "@/components/WhyChooseUS";
 import AllPromptsSection from "@/components/AllPromptsSection";
 import TopCreators from "@/components/TopCreators";
+import CustomerReviewsSection from "@/components/CustomerReviews";
 
 export default async function Home() {
   const res = await fetch('http://localhost:5000/all-promts');
@@ -41,8 +42,10 @@ export default async function Home() {
     <>
       <HeroSection />
       <AllPromptsSection prompts={prompts} />
-      <TopCreators creators={creators} />
       <WhyChooseUs />
+      <TopCreators creators={creators} />
+      <CustomerReviewsSection />
+      
     </>
   );
 }
