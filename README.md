@@ -310,10 +310,7 @@ The Express server runs on `http://localhost:5000`. Key endpoints:
 
 The frontend uses a proxy configuration in `proxy.js` to route API requests to the Express backend during development.
 
-```javascript
-// proxy.js
-const { createProxyMiddleware } = require('http-proxy-middleware');
-```
+
 
 ---
 
