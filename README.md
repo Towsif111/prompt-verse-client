@@ -198,13 +198,7 @@ Seed demo users by making a POST request to the seed endpoint:
 curl -X POST http://localhost:5000/auth/seed-demo
 ```
 
-| Role | Email | Password |
-|---|---|---|
-| **Admin** | admin@demo.com | Demo@123 |
-| **Creator** | creator@demo.com | Demo@123 |
-| **User** | user@demo.com | Demo@123 |
 
----
 
 ## 📡 API Reference
 
