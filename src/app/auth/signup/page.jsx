@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 import { Card, Separator, Button, FieldError, Form, Input, Label, TextField } from "@heroui/react";
-import {Description, Radio, RadioGroup} from "@heroui/react";
+import { Description, Radio, RadioGroup } from "@heroui/react";
 import toast from "react-hot-toast";
 import { authClient } from "@/lib/auth-client";
 
@@ -17,14 +17,14 @@ const SignUpPage = () => {
     const user = Object.fromEntries(formData.entries());
 
     const { data, error } = await authClient.signUp.email({
-        email: user.email,
-        password: user.password,
-        name: user.name,
-        image: user.image,
-        subscription: user.subscription,
-        role: "User",
-        callbackURL: "/",
-});
+      email: user.email,
+      password: user.password,
+      name: user.name,
+      image: user.image,
+      subscription: user.subscription,
+      role: "User",
+      callbackURL: "/",
+    });
 
 
     if (error) {
@@ -33,6 +33,25 @@ const SignUpPage = () => {
     }
 
     if (data) {
+      try {
+        const expressRes = await fetch("http://localhost:5000/auth/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: user.name,
+            email: user.email,
+            password: user.password,
+            photoURL: user.image || "",
+          }),
+        });
+        const expressData = await expressRes.json();
+        if (expressRes.ok && expressData.token) {
+          localStorage.setItem("express_token", expressData.token);
+        }
+      } catch (err) {
+        console.error("Express register sync failed:", err);
+      }
+
       toast.success("Account created successfully.");
       router.push("/");
     }
@@ -100,33 +119,41 @@ const SignUpPage = () => {
           </TextField>
 
           <div className="flex flex-col gap-4">
-      <Label>Choose your plan</Label>
-      <RadioGroup  name="subscription" orientation="horizontal">
-        <Radio value="free">
-          <Radio.Content>
-            <Radio.Control>
-              <Radio.Indicator />
-            </Radio.Control>
-            Free
-          </Radio.Content>
-          <Description>Limit: 5 Prompts</Description>
-        </Radio>
-        <Radio value="premium">
-          <Radio.Content>
-            <Radio.Control>
-              <Radio.Indicator />
-            </Radio.Control>
-            Premium
-          </Radio.Content>
-          <Description>Unlock All Prompts</Description>
-        </Radio>
-      </RadioGroup>
-    </div>
+            <Label>Choose your plan</Label>
+            <RadioGroup name="subscription" orientation="horizontal">
+              <Radio value="free">
+                <Radio.Content>
+                  <Radio.Control>
+                    <Radio.Indicator />
+                  </Radio.Control>
+                  Free
+                </Radio.Content>
+                <Description>Limit: 5 Prompts</Description>
+              </Radio>
+              <Radio value="premium">
+                <Radio.Content>
+                  <Radio.Control>
+                    <Radio.Indicator />
+                  </Radio.Control>
+                  Premium
+                </Radio.Content>
+                <Description>Unlock All Prompts</Description>
+              </Radio>
+            </RadioGroup>
+          </div>
 
           <Button type="submit" className="w-full rounded-none">
             Create Account
           </Button>
         </Form>
+
+        <form action="/api/checkout_sessions" method="POST">
+          <section>
+            <button type="submit" role="link">
+              Checkout
+            </button>
+          </section>
+        </form>
 
         <div className="flex items-center justify-center my-4">
           <Separator className="w-50" />

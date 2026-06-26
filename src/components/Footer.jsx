@@ -19,6 +19,8 @@ export default function Footer() {
                             <li><Link href="/all-prompts" className="text-base text-gray-500 hover:text-gray-900">All Prompts</Link></li>
                             <li><Link href="/all-prompts" className="text-base text-gray-500 hover:text-gray-900">Trending</Link></li>
                             <li><Link href="/#top-creators" className="text-base text-gray-500 hover:text-gray-900">Top Creators</Link></li>
+                            <li><Link href="/pricing" className="text-base text-gray-500 hover:text-gray-900">Pricing</Link></li>
+                            <li><Link href="/demo-users" className="text-base text-gray-500 hover:text-gray-900">Demo Users</Link></li>
                         </ul>
                     </div>
                     <div>

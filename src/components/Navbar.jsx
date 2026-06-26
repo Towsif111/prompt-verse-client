@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { LogIn, Sparkles, UserPlus, LogOut, ChevronDown, LayoutDashboard } from "lucide-react";
+import { LogIn, Sparkles, UserPlus, LogOut, ChevronDown, LayoutDashboard, Shield, Crown } from "lucide-react";
 import toast from "react-hot-toast";
 import { signOut, useSession } from "@/lib/auth-client";
 import { useState, useRef, useEffect } from "react";
@@ -38,6 +38,14 @@ function Navbar() {
   };
 
   const user = session?.user;
+  const isAdmin = user?.role === "Admin";
+  const isCreator = user?.role === "Creator";
+
+  const getDashboardHref = () => {
+    if (isAdmin) return "/dashboard/admin";
+    if (isCreator) return "/dashboard/creator";
+    return "/dashboard/user";
+  };
 
   const getInitials = (name) => {
     return name
@@ -47,6 +55,14 @@ function Navbar() {
       .toUpperCase()
       .slice(0, 2) || "U";
   };
+
+  const getRoleBadge = () => {
+    if (isAdmin) return { text: "Admin", color: "text-indigo-600", icon: Shield };
+    if (isCreator) return { text: "Creator", color: "text-amber-600", icon: Crown };
+    return null;
+  };
+
+  const role = getRoleBadge();
 
   return (
     <nav className="sticky top-0 z-50 border-b border-slate-200 bg-white/80 backdrop-blur-xl">
@@ -74,6 +90,12 @@ function Navbar() {
             className="btn btn-ghost btn-sm border border-transparent text-2xl text-slate-700 hover:border-slate-200 hover:bg-slate-100"
           >
             All Prompts
+          </Link>
+          <Link
+            href="/pricing"
+            className="btn btn-ghost btn-sm border border-transparent text-2xl text-slate-700 hover:border-slate-200 hover:bg-slate-100"
+          >
+            Pricing
           </Link>
         </div>
 
@@ -110,7 +132,7 @@ function Navbar() {
               </button>
 
               {showDropdown && (
-                <div className="absolute right-0 top-full mt-2 w-56 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg">
+                <div className="absolute right-0 top-full mt-2 w-64 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg">
                   <div className="border-b border-slate-100 px-4 py-3">
                     <p className="text-sm font-medium text-slate-900 truncate">
                       {user.name || "User"}
@@ -118,24 +140,76 @@ function Navbar() {
                     <p className="text-xs text-slate-500 truncate">
                       {user.email}
                     </p>
+                    {role && (
+                      <span className={`mt-1 inline-flex items-center gap-1 rounded-full bg-slate-50 px-2 py-0.5 text-xs font-medium ${role.color}`}>
+                        <role.icon size={12} />
+                        {role.text}
+                      </span>
+                    )}
                   </div>
                   <div className="p-1">
                     <Link
-                      href="/dashboard/user"
+                      href={getDashboardHref()}
                       onClick={() => setShowDropdown(false)}
                       className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-700 transition hover:bg-slate-100"
                     >
                       <LayoutDashboard className="h-4 w-4" />
                       Dashboard
                     </Link>
+                    
+                    {/* Role-specific quick links */}
+                    {isAdmin && (
+                      <>
+                        <Link
+                          href="/dashboard/admin/users"
+                          onClick={() => setShowDropdown(false)}
+                          className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-700 transition hover:bg-slate-100"
+                        >
+                          <Shield className="h-4 w-4" />
+                          Manage Users
+                        </Link>
+                        <Link
+                          href="/dashboard/admin/prompts"
+                          onClick={() => setShowDropdown(false)}
+                          className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-700 transition hover:bg-slate-100"
+                        >
+                          <Shield className="h-4 w-4" />
+                          Manage Prompts
+                        </Link>
+                      </>
+                    )}
+                    
+                    {isCreator && (
+                      <Link
+                        href="/dashboard/creator"
+                        onClick={() => setShowDropdown(false)}
+                        className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-700 transition hover:bg-slate-100"
+                      >
+                        <Crown className="h-4 w-4" />
+                        Creator Dashboard
+                      </Link>
+                    )}
+
                     <Link
                       href="/dashboard/profile"
                       onClick={() => setShowDropdown(false)}
                       className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-700 transition hover:bg-slate-100"
                     >
-                      <LogIn className="h-4 w-4" />
+                      <UserPlus className="h-4 w-4" />
                       Profile Settings
                     </Link>
+                    
+                    {user.subscription !== "Premium" && user.subscription !== "premium" && (
+                      <Link
+                        href="/payment"
+                        onClick={() => setShowDropdown(false)}
+                        className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-amber-700 transition hover:bg-amber-50"
+                      >
+                        <Crown className="h-4 w-4" />
+                        Upgrade to Premium
+                      </Link>
+                    )}
+
                     <button
                       type="button"
                       onClick={handleSignOut}

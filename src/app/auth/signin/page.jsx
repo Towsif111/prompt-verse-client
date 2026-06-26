@@ -26,6 +26,21 @@ const SignInPage = () => {
     }
 
     if (data) {
+      // Also sign in to Express server to get JWT for API calls
+      try {
+        const expressRes = await fetch("http://localhost:5000/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: user.email, password: user.password }),
+        });
+        const expressData = await expressRes.json();
+        if (expressRes.ok && expressData.token) {
+          localStorage.setItem("express_token", expressData.token);
+        }
+      } catch (err) {
+        console.error("Express login sync failed:", err);
+      }
+
       toast.success("Signed in successfully.");
       router.push("/");
     }

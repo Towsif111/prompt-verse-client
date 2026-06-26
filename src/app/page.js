@@ -8,7 +8,8 @@ import FaqSection from "@/components/FAQ";
 
 export default async function Home() {
   const res = await fetch('http://localhost:5000/all-promts');
-  const prompts = await res.json();
+  const data = await res.json();
+  const prompts = data.prompts || data;
 
   // Aggregate prompts by creator to compute top creators
   const creatorMap = {};

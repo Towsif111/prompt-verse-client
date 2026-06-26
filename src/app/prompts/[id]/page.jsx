@@ -10,7 +10,8 @@ export default async function PromptDetailPage({ params }) {
 
   if (!res.ok) return notFound();
 
-  const prompts = await res.json();
+  const data = await res.json();
+  const prompts = data.prompts || data;
   const prompt = prompts.find((p) => p._id === id);
 
   if (!prompt) return notFound();
