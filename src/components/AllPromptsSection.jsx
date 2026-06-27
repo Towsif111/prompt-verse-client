@@ -1,6 +1,25 @@
 import AllPromptsCard from "./AllPromptsCard";
 
-export default function AllPromptsSection({ prompts = [] }) {
+async function getPrompts() {
+  try {
+    const res = await fetch("https://prompt-verse-server.vercel.app/all-promts", {
+      cache: "no-store",
+    });
+    if (!res.ok) {
+      console.error(`Failed to fetch prompts: ${res.status} ${res.statusText}`);
+      return [];
+    }
+    const data = await res.json();
+    return data.prompts || data || [];
+  } catch (err) {
+    console.error("Failed to fetch prompts:", err.message);
+    return [];
+  }
+}
+
+export default async function AllPromptsSection() {
+  const prompts = await getPrompts();
+
   return (
     <section id="all-prompts" className="container-shell py-16">
       <div className="mx-auto max-w-2xl text-center mb-12">

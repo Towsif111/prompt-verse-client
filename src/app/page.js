@@ -60,7 +60,7 @@ export default async function Home() {
   return (
     <>
       <HeroSection />
-      <AllPromptsSection prompts={prompts} />
+      <AllPromptsSection />
       <PlatformStats stats={stats} />
       <WhyChooseUs />
       <TopCreators creators={creators} />

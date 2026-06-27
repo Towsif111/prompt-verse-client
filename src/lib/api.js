@@ -1,9 +1,9 @@
 /**
  * Base URL for the Express backend API.
  * Set NEXT_PUBLIC_API_URL in Vercel to your deployed backend URL.
- * Falls back to localhost:5000 for local development.
+ * Falls back to the production backend URL.
  */
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://prompt-verse-server.vercel.app';
 
 /**
  * Fetch wrapper that returns null on failure instead of throwing.
