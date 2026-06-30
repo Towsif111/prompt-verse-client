@@ -102,7 +102,14 @@ const SignUpPage = () => {
             <FieldError />
           </TextField>
 
-          
+          <div className="space-y-3">
+            <p className="text-xs" style={{ color: 'var(--color-text-muted)' }}>Or provide a custom URL below</p>
+            <TextField name="image" type="url">
+              <Label>Custom Image URL</Label>
+              <Input placeholder="https://example.com/avatar.jpg" />
+              <FieldError />
+            </TextField>
+          </div>
 
           <TextField
             isRequired
